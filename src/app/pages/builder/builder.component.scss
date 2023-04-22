@@ -1,0 +1,24 @@
+.question-page {
+  .title {
+    text-align: center;
+  }
+
+  .question-section {
+    margin-bottom: 30px;
+
+    .question-title {
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}

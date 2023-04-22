@@ -1,35 +1,40 @@
-<form [formGroup]="answerForm">
-  <div formArrayName="answers">
-    <ng-container *ngFor="let question of questions; let i = index">
+<div class="question-page">
+  <h2 class="title">FORM BUILDER</h2>
+  <form [formGroup]="answerForm">
+    <div formArrayName="answers">
+      <div class="question-section" *ngFor="let question of questions; let i = index">
 
-      <mat-label>{{question.id}} - {{question.title}}</mat-label>
+        <div class="question-title">{{question.id}} - {{question.title}}
+          <span *ngIf="question.isRequired">(*)</span>
+        </div>
 
-      <div formGroupName="{{i}}">
+        <div formGroupName="{{i}}">
 
-        <ng-container *ngIf="question.type === QUESTION_TYPE.Paragraph">
-          <mat-form-field appearance="fill">
-            <textarea formControlName="textAnswer" matInput placeholder="Type answer here"></textarea>
-          </mat-form-field>
-        </ng-container>
+          <ng-container *ngIf="question.type === QUESTION_TYPE.Paragraph">
+            <mat-form-field appearance="fill">
+              <textarea formControlName="textAnswer" matInput placeholder="Type answer here"></textarea>
+            </mat-form-field>
+          </ng-container>
 
-        <ng-container *ngIf="question.type === QUESTION_TYPE.Checkbox">
-          <section formArrayName="selectedOptions">
-            <ng-container *ngFor="let answerOption of question.answerOptions; let i = index">
-              <div>
-                <mat-checkbox formControlName="{{i}}"></mat-checkbox>
-                {{answerOption}}
-              </div>
-            </ng-container>
-          </section>
-        </ng-container>
+          <ng-container *ngIf="question.type === QUESTION_TYPE.Checkbox">
+            <section formArrayName="selectedOptions">
+              <ng-container *ngFor="let answerOption of question.answerOptions; let i = index">
+                <div>
+                  <mat-checkbox formControlName="{{i}}"></mat-checkbox>
+                  {{answerOption}}
+                </div>
+              </ng-container>
+            </section>
+          </ng-container>
+
+        </div>
 
       </div>
+    </div>
+  </form>
 
-    </ng-container>
+  <div class="actions">
+    <button mat-raised-button color="primary" (click)="openAddQuestionPopup()">Add question</button>
+    <button mat-raised-button color="primary" (click)="openReviewMyAnswer()">Review my answer</button>
   </div>
-</form>
-
-<div>
-  <button mat-raised-button color="primary" (click)="openAddQuestionPopup()">Add question</button>
-  <button mat-raised-button color="primary" (click)="openReviewMyAnswer()">Review my answer</button>
 </div>

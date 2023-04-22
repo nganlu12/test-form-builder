@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddQuestionPopupComponent } from './add-question-popup/add-question-popup.component';
 import { FormGroup, NonNullableFormBuilder } from '@angular/forms';
@@ -14,7 +14,7 @@ import { Answer } from 'src/app/models/answer.model';
   templateUrl: './builder.component.html',
   styleUrls: ['./builder.component.scss']
 })
-export class BuilderComponent {
+export class BuilderComponent implements OnInit {
   public QUESTION_TYPE = QuestionType;
   public questions: Question[] = [];
   public answerForm: FormGroup<AnswerForm> = new FormGroup({} as AnswerForm);
@@ -24,7 +24,9 @@ export class BuilderComponent {
     private _formBuilder: NonNullableFormBuilder,
     private _contextServiceService: ContextServiceService,
     private _route: Router
-  ) {
+  ) { }
+
+  ngOnInit(): void {
     this._initAnswerForm();
   }
 
@@ -32,9 +34,11 @@ export class BuilderComponent {
     const dialogRef = this._dialog.open(AddQuestionPopupComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.questions.push({ ...result, ...{ id: this.questions.length + 1 } });
-      this._contextServiceService.questions.next(this.questions);
-      this.answerForm.controls.answers.push(this._initQuestionAnswerForm(result));
+      if (result) {
+        this.questions.push({ ...result, ...{ id: this.questions.length + 1 } });
+        this._contextServiceService.questions.next(this.questions);
+        this.answerForm.controls.answers.push(this._initQuestionAnswerForm(result));
+      }
     });
   }
 

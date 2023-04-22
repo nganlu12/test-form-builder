@@ -1,4 +1,7 @@
-<ng-container *ngFor="let question of questions">
-  <div>{{question.id}} - {{question.title}}</div>
-  <div>{{getAnswerById(question.id)}}</div>
-</ng-container>
+<div class="answer-page">
+  <h2 class="title">REVIEW ANSWER</h2>
+  <div class="answer-section" *ngFor="let question of questions">
+    <div class="question">{{question.id}} - {{question.title}}</div>
+    <div class="answer">{{getAnswerById(question.id)}}</div>
+  </div>
+</div>

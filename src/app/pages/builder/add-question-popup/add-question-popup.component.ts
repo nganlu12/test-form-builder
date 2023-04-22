@@ -13,6 +13,7 @@ export class AddQuestionPopupComponent implements OnInit {
   public QUESTION_TYPE = QuestionType;
   public MAX_ANSWER_OPTION = 5;
   public questionForm: FormGroup<QuestionBuilderForm> = new FormGroup({} as QuestionBuilderForm);
+  public isDisplayError: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<AddQuestionPopupComponent>,
@@ -48,5 +49,13 @@ export class AddQuestionPopupComponent implements OnInit {
 
   public onCancel(): void {
     this.dialogRef.close();
+  }
+
+  public onSubmit(): void {
+    if (this.questionForm.dirty && this.questionForm.valid) {
+      this.dialogRef.close(this.questionForm.value);
+    } else {
+      this.isDisplayError = true;
+    }
   }
 }

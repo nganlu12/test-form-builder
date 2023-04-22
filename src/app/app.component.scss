@@ -1,0 +1,17 @@
+.page {
+  background: url('/assets/background.jpg');
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 32px;
+  box-sizing: border-box;
+
+  .main-content {
+    width: 800px;
+    background: white;
+    border-radius: 10px;
+    margin: auto;
+    padding: 32px;
+  }
+}
