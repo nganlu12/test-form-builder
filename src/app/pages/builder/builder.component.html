@@ -1,0 +1,34 @@
+<form [formGroup]="answerForm">
+  <div formArrayName="answers">
+    <ng-container *ngFor="let question of questions; let i = index">
+
+      <mat-label>{{question.title}}</mat-label>
+
+      <div formGroupName="{{i}}">
+
+        <ng-container *ngIf="question.type === QUESTION_TYPE.Paragraph">
+          <mat-form-field appearance="fill">
+            <textarea formControlName="textAnswer" matInput placeholder="Type answer here"></textarea>
+          </mat-form-field>
+        </ng-container>
+
+        <ng-container *ngIf="question.type === QUESTION_TYPE.Checkbox">
+          <section formArrayName="selectedOptions">
+            <ng-container *ngFor="let answerOption of question.answerOptions; let i = index">
+              <div>
+                <mat-checkbox formControlName="{{i}}"></mat-checkbox>
+                {{answerOption}}
+              </div>
+            </ng-container>
+          </section>
+        </ng-container>
+
+      </div>
+
+    </ng-container>
+  </div>
+</form>
+
+<div>
+  <button mat-raised-button color="primary" (click)="openAddQuestionPopup()">Add question</button>
+</div>

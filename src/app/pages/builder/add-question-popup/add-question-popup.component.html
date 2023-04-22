@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Add a New Questions</h1>
+<div mat-dialog-content>
+  <form [formGroup]="questionForm">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Question type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option [value]="QUESTION_TYPE.Paragraph">Paragraph</mat-option>
+        <mat-option [value]="QUESTION_TYPE.Checkbox">Checkbox List</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Question title</mat-label>
+      <textarea formControlName="title" matInput placeholder="Type question here"></textarea>
+    </mat-form-field>
+
+    <div formArrayName="answerOptions">
+      <mat-form-field appearance="fill" *ngFor="let answerOption of answerOptions.controls; let i = index">
+        <input formControlName="{{i}}" matInput placeholder="Add answer option here">
+      </mat-form-field>
+    </div>
+
+    <button *ngIf="questionType === QUESTION_TYPE.Checkbox && answerOptions.length < MAX_ANSWER_OPTION"
+      mat-stroked-button (click)="addAnswerOption()">
+      Add other answer
+    </button>
+
+    <section>
+      <mat-checkbox formControlName="isAllowOther">Allow user to specify their own answer</mat-checkbox>
+    </section>
+
+    <section>
+      <mat-checkbox formControlName="isRequired">This field is required</mat-checkbox>
+    </section>
+
+  </form>
+</div>
+<div class="actions" mat-dialog-actions>
+  <button mat-raised-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="questionForm.value">Submit</button>
+</div>
