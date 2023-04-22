@@ -2,7 +2,7 @@
   <div formArrayName="answers">
     <ng-container *ngFor="let question of questions; let i = index">
 
-      <mat-label>{{question.title}}</mat-label>
+      <mat-label>{{question.id}} - {{question.title}}</mat-label>
 
       <div formGroupName="{{i}}">
 
@@ -31,4 +31,5 @@
 
 <div>
   <button mat-raised-button color="primary" (click)="openAddQuestionPopup()">Add question</button>
+  <button mat-raised-button color="primary" (click)="openReviewMyAnswer()">Review my answer</button>
 </div>

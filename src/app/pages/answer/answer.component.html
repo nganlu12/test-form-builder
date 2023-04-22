@@ -1,3 +1,4 @@
-<div>
-
-</div>
+<ng-container *ngFor="let question of questions">
+  <div>{{question.id}} - {{question.title}}</div>
+  <div>{{getAnswerById(question.id)}}</div>
+</ng-container>

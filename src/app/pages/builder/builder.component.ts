@@ -5,6 +5,9 @@ import { FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { QuestionType } from 'src/app/utils/enum';
 import { AnswerForm, QuestionAnswer } from 'src/app/models/answer-form.model';
 import { Question } from 'src/app/models/question.model';
+import { ContextServiceService } from 'src/app/services/context-service.service';
+import { Router } from '@angular/router';
+import { Answer } from 'src/app/models/answer.model';
 
 @Component({
   selector: 'app-builder',
@@ -18,7 +21,9 @@ export class BuilderComponent {
 
   constructor(
     private _dialog: MatDialog,
-    private _formBuilder: NonNullableFormBuilder
+    private _formBuilder: NonNullableFormBuilder,
+    private _contextServiceService: ContextServiceService,
+    private _route: Router
   ) {
     this._initAnswerForm();
   }
@@ -27,9 +32,28 @@ export class BuilderComponent {
     const dialogRef = this._dialog.open(AddQuestionPopupComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.questions.push(result);
+      this.questions.push({ ...result, ...{ id: this.questions.length + 1 } });
+      this._contextServiceService.questions.next(this.questions);
       this.answerForm.controls.answers.push(this._initQuestionAnswerForm(result));
     });
+  }
+
+  public openReviewMyAnswer(): void {
+    const formValues = (this.answerForm.value.answers ?? []);
+
+    const answers = formValues.map((answer, index) => {
+      const selectedOptions = answer.selectedOptions?.map((selected, index) => selected ? index : -1).filter(item => item != -1);
+      const result: Answer = {
+        questionId: index + 1,
+        questionType: answer.questionType as QuestionType,
+        selectedOptions: selectedOptions ?? [],
+        textAnswer: answer.textAnswer as string
+      };
+      return result;
+    });
+
+    this._contextServiceService.answers.next(answers);
+    this._route.navigate(['answer']);
   }
 
   private _initAnswerForm(): void {
